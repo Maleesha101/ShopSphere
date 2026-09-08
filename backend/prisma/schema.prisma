@@ -1,0 +1,94 @@
+// Prisma Schema for ShopSphere Security Misconfiguration Lab
+// This schema defines the database structure for the e-commerce platform.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env      = "DATABASE_URL"
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("customer") // customer or admin
+  firstName    String
+  lastName     String
+  createdAt    DateTime @default(now())
+  cartItems    CartItem[]
+  orders       Order[]
+  auditLogs    AuditLog[]
+
+  @@index([email])
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  category    String
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+
+  @@index([category])
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int
+
+  user    User    @relation(fields: [userId], references: [id])
+  product Product   @relation(fields: [productId], references: [id])
+
+  @@unique([userId, productId])
+  @@index([userId])
+  @@index([productId])
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  total      Float
+  status     String   @default("pending") // pending, processing, shipped, delivered, cancelled
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id])
+  orderItems OrderItem[]
+  auditLogs  AuditLog[]
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id         Int      @id @default(autoincrement())
+  orderId    Int
+  productId  Int
+  quantity   Int
+  price      Float    // Price at time of purchase
+
+  order      Order    @relation(fields: [orderId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  createdAt DateTime @default(now())
+
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([createdAt])
+}

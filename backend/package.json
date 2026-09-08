@@ -1,0 +1,60 @@
+{
+  "name": "shopsphere-api",
+  "version": "1.0.0",
+  "description": "ShopSphere Security Misconfiguration Lab - intentionally vulnerable backend",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "seed": "tsx prisma/seed.ts",
+    "prisma": "prisma",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": [
+    "security",
+    "lab",
+    "misconfiguration",
+    "owasp"
+  ],
+  "author": "ShopSphere Lab",
+  "license": "LAB-EDUCATIONAL-ONLY",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "5.22.0",
+    "bcryptjs": "2.4.3",
+    "cors": "2.8.5",
+    "dotenv": "16.4.5",
+    "express": "4.19.2",
+    "jsonwebtoken": "9.0.2",
+    "prisma": "5.22.0",
+    "winston": "3.14.0",
+    // LAB VULNERABILITY: SM-08 - Intentionally outdated dependency.
+    // lodash 4.17.15 has a known prototype pollution vulnerability (CVE-2019-10744).
+    // This is a DELIBERATE lab artifact for demonstrating dependency management.
+    // DO NOT use this version in any production system.
+    "lodash": "4.17.15"
+  },
+  "labVulnerabilities": [
+    {
+      "id": "SM-08",
+      "description": "Intentionally outdated dependency lodash 4.17.15 with CVE-2019-10744 prototype pollution. Deliberate lab artifact, not used for application logic.",
+      "usage": "src/services/legacyConfig.ts"
+    }
+  ]
+},
+  "devDependencies": {
+    "@types/bcryptjs": "2.4.6",
+    "@types/cors": "2.8.17",
+    "@types/express": "4.17.21",
+    "@types/jsonwebtoken": "9.0.6",
+    "@types/node": "20.17.10",
+    "tsx": "4.19.2",
+    "typescript": "5.6.3",
+    "eslint": "8.57.1",
+    "@typescript-eslint/eslint-plugin": "7.18.0",
+    "@typescript-eslint/parser": "7.18.0"
+  }
+}
