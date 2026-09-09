@@ -20,6 +20,7 @@ import adminRoutes from "./routes/admin.ts";
 import storageRoutes from "./routes/storage.ts";
 import debugRoutes from "./routes/debug.ts";
 import labRoutes from "./routes/lab.ts";
+import { legacyConfig } from "./services/legacyConfig.ts";
 
 // Configure CORS based on LAB_MODE
 const corsConfig = config.labMode === "vulnerable"
@@ -63,6 +64,9 @@ if (config.labMode === "hardened") {
 // Parse cookies
 app.use(express.json({ limit: "10mb" }));
 
+// Set lab mode on app for routes to access
+app.set("labMode", config.labMode);
+
 // Apply authentication middleware globally
 app.use(authMiddleware);
 
@@ -82,22 +86,13 @@ if (config.labMode === "vulnerable") {
 
   // SM-05: Error disclosure endpoint
   app.use("/api/lab", labRoutes);
+
+  // SM-08: Legacy dependency usage
+  legacyConfig.load();
 }
 
 // Error handling middleware
 app.use(errorHandler as express.ErrorRequestHandler);
-
-// Initialize database connection
-async function initDatabase(): Promise<void> {
-  try {
-    // Test database connection
-    await prisma.$connect();
-    console.log("✅ Database connected successfully");
-  } catch (error) {
-    console.error("❌ Database connection failed:", error);
-    process.exit(1);
-  }
-}
 
 // Health check endpoint
 app.get("/", async (req: Request, res: Response) => {
@@ -131,6 +126,17 @@ async function startServer(): Promise<void> {
    - Health check: http://localhost:${config.port}/
    - Browse Products: http://localhost:${config.port}/api/products`);
   });
+}
+
+// Initialize database connection
+async function initDatabase(): Promise<void> {
+  try {
+    await prisma.$connect();
+    console.log("✅ Database connected successfully");
+  } catch (error) {
+    console.error("❌ Database connection failed:", error);
+    process.exit(1);
+  }
 }
 
 // Graceful shutdown

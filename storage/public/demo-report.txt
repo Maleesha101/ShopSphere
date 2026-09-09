@@ -1,0 +1,10 @@
+ShopSphere Public Demo Report
+==============================
+
+This is a public demo report file.
+It demonstrates that in vulnerable mode, public storage is accessible
+without authentication.
+
+In hardened mode, this file requires authentication.
+
+This file contains no real secrets or credentials.

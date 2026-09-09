@@ -1,0 +1,10 @@
+ShopSphere Private Report
+==========================
+
+This is a PRIVATE report file.
+In vulnerable mode, this file is accessible without authentication
+(SM-07: Public object storage permissions).
+
+In hardened mode, this file requires admin authentication.
+
+This file contains no real secrets or credentials.

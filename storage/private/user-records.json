@@ -1,0 +1,9 @@
+{
+  "note": "This is a simulated private user records file",
+  "access": "admin only in hardened mode",
+  "data": [
+    { "id": 1, "email": "customer@example.local", "role": "customer" },
+    { "id": 2, "email": "admin@example.local", "role": "admin" }
+  ],
+  "warning": "Synthetic data only - no real user information"
+}
