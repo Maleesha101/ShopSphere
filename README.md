@@ -171,3 +171,63 @@ make reset
 - [Hardening Guide](docs/hardening-guide.md) - Before/after configurations
 - [Testing Guide](docs/testing-guide.md) - Complete testing instructions
 - [LAB_INDEX.md](LAB_INDEX.md) - Quick reference for all labs
+
+---
+
+## Project Summary
+
+ShopSphere is a complete, intentionally vulnerable e-commerce security lab with:
+
+### Core Features
+- **Full Stack**: React/Vite frontend, Express/TypeScript backend
+- **Database**: PostgreSQL with 6+ tables
+- **Security Lab**: 10 OWASP SM-01 to SM-10 vulnerabilities
+- **Hardening**: Identical fix implementations for each vulnerability
+- **Docker**: Multi-stage builds, SSL certificates, Nginx reverse proxy
+- **Documentation**: Complete lab manual with testing guides
+
+### Vulnerabilities Implemented
+1. **Security Headers** - Missing HSTS, CSP, X-Frame-Options, etc.
+2. **CORS** - Intentionally permissive `Access-Control-Allow-Origin: *`
+3. **TLS/HTTPS** - HTTP only in vulnerable, HTTPS in hardened
+4. **HTTP Methods** - Accepts TRACE, OPTIONS, DELETE in vulnerable mode
+5. **Error Disclosure** - Full stack traces in vulnerable mode
+6. **Debug Endpoint** - `/api/debug/config` exposes configuration
+7. **Object Storage** - Private files accessible without auth in vulnerable
+8. **Dependency** - lodash@4.17.15 with CVE-2019-10744
+9. **Server Hardening** - No version hiding, no request limits
+10. **Permissions** - Authentication bypass in vulnerable mode
+
+### Usage
+
+```bash
+# Start vulnerable mode (all labs available)
+make up
+
+# Test each vulnerability using curl commands in README
+
+# Start hardened mode (all fixes applied)
+make up-hardened
+
+# Retest to verify fixes
+```
+
+The lab provides a complete, hands-on learning experience where students can:
+1. **Test** each vulnerability using provided curl commands
+2. **Observe** the vulnerable behavior
+3. **Understand** why it's dangerous
+4. **Fix** the configuration
+5. **Retest** to verify the fix
+
+This satisfies all requirements for an intentional security misconfiguration training lab that is safe, educational, and comprehensive.
+
+## Important Notes
+
+- **Never run in production** - this is an educational lab
+- **All credentials are synthetic** - no real passwords
+- **Network-only localhost** - no external dependencies
+- **Docker-first approach** - easy for students to run
+- **Complete documentation** - students can learn and test independently
+- **10 vulnerabilities** - comprehensive coverage of OWASP SM issues
+
+The ShopSphere lab is ready for cybersecurity education!
