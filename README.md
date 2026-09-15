@@ -170,6 +170,7 @@ make reset
 - [Vulnerability Matrix](docs/vulnerability-matrix.md) - Detailed vulnerability documentation
 - [Hardening Guide](docs/hardening-guide.md) - Before/after configurations
 - [Testing Guide](docs/testing-guide.md) - Complete testing instructions
+- [Postman API Collection](docs/postman/README.md) - Importable API collection, environment, and execution guide
 - [LAB_INDEX.md](LAB_INDEX.md) - Quick reference for all labs
 
 ---
