@@ -32,11 +32,7 @@
     "jsonwebtoken": "9.0.2",
     "prisma": "5.22.0",
     "winston": "3.14.0",
-    // LAB VULNERABILITY: SM-08 - Intentionally outdated dependency.
-    // lodash 4.17.15 has a known prototype pollution vulnerability (CVE-2019-10744).
-    // This is a DELIBERATE lab artifact for demonstrating dependency management.
-    // DO NOT use this version in any production system.
-    "lodash": "4.17.15"
+    "lodash": "4.17.15" 
   },
   "labVulnerabilities": [
     {
@@ -44,8 +40,7 @@
       "description": "Intentionally outdated dependency lodash 4.17.15 with CVE-2019-10744 prototype pollution. Deliberate lab artifact, not used for application logic.",
       "usage": "src/services/legacyConfig.ts"
     }
-  ]
-},
+  ],
   "devDependencies": {
     "@types/bcryptjs": "2.4.6",
     "@types/cors": "2.8.17",

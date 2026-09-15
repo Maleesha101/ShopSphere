@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm ci
+RUN npm install --no-audit --no-fund
 
 # Copy source code
 COPY prisma ./prisma/
@@ -32,7 +32,7 @@ WORKDIR /app
 
 # Install production dependencies only
 COPY package*.json ./
-RUN npm ci --omit=dev
+RUN npm install --omit=dev --no-audit --no-fund
 
 # Copy built files and Prisma
 COPY --from=builder /app/dist ./dist
