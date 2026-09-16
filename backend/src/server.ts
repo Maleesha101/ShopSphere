@@ -1,7 +1,6 @@
 // Main Express server entry point
 // Initializes Express app, middleware, routes, and starts the server
 
-import "reflect-metadata";
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
