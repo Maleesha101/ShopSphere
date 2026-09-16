@@ -8,9 +8,16 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
+RUN apk add --no-cache openssl
+
 # Install dependencies
 COPY package*.json ./
-RUN npm install --no-audit --no-fund
+RUN npm install --no-audit --no-fund \
+    --fetch-retries=5 \
+    --fetch-retry-mintimeout=20000 \
+    --fetch-retry-maxtimeout=120000 \
+    --fetch-timeout=300000 \
+    --maxsockets=1
 
 # Copy source code
 COPY prisma ./prisma/
@@ -30,9 +37,16 @@ FROM node:20-alpine AS production
 
 WORKDIR /app
 
+RUN apk add --no-cache openssl
+
 # Install production dependencies only
 COPY package*.json ./
-RUN npm install --omit=dev --no-audit --no-fund
+RUN npm install --omit=dev --no-audit --no-fund \
+    --fetch-retries=5 \
+    --fetch-retry-mintimeout=20000 \
+    --fetch-retry-maxtimeout=120000 \
+    --fetch-timeout=300000 \
+    --maxsockets=1
 
 # Copy built files and Prisma
 COPY --from=builder /app/dist ./dist
