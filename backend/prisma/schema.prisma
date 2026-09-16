@@ -61,7 +61,6 @@ model Order {
 
   user       User     @relation(fields: [userId], references: [id])
   orderItems OrderItem[]
-  auditLogs  AuditLog[]
 
   @@index([userId])
   @@index([createdAt])

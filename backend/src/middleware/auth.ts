@@ -3,7 +3,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 // Extend Express Request interface to include user data
 declare global {
@@ -14,6 +14,10 @@ declare global {
       role: string;
       firstName: string;
       lastName: string;
+    }
+
+    interface Request {
+      user?: User;
     }
   }
 }
@@ -147,3 +151,5 @@ export const optionalAuth = async (
     next();
   }
 };
+
+export default authMiddleware;

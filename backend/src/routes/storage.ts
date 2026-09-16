@@ -2,8 +2,8 @@
 // Simulates object storage with mode-dependent access control
 
 import { Router } from "express";
-import { prisma } from "../config/database.ts";
-import { config } from "../config/index.ts";
+import { prisma } from "../config/database";
+import { config } from "../config/index";
 
 const router = Router();
 

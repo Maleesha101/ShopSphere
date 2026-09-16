@@ -3,6 +3,11 @@
 
 import { PrismaClient } from "@prisma/client";
 
+declare global {
+  // eslint-disable-next-line no-var
+  var __db: PrismaClient | undefined;
+}
+
 // PrismaClient is attached to the `global` object in development to prevent
 // exhausting your database connection limit.
 //

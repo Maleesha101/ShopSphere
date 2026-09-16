@@ -3,9 +3,9 @@
 
 import { Router } from "express";
 import jwt from "jsonwebtoken";
-import { prisma } from "../config/database.ts";
+import { prisma } from "../config/database";
 import { compare } from "bcryptjs";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 const router = Router();
 

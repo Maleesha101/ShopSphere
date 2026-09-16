@@ -5,22 +5,22 @@ import "reflect-metadata";
 import express, { Application, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import helmet from "helmet";
-import { config } from "./config/index.ts";
-import { prisma } from "./config/database.ts";
-import errorHandler from "./middleware/errorHandler.ts";
-import authMiddleware from "./middleware/auth.ts";
+import { config } from "./config/index";
+import { prisma } from "./config/database";
+import errorHandler from "./middleware/errorHandler";
+import authMiddleware from "./middleware/auth";
 
 // Routes
-import healthRoutes from "./routes/health.ts";
-import authRoutes from "./routes/auth.ts";
-import productsRoutes from "./routes/products.ts";
-import cartRoutes from "./routes/cart.ts";
-import ordersRoutes from "./routes/orders.ts";
-import adminRoutes from "./routes/admin.ts";
-import storageRoutes from "./routes/storage.ts";
-import debugRoutes from "./routes/debug.ts";
-import labRoutes from "./routes/lab.ts";
-import { legacyConfig } from "./services/legacyConfig.ts";
+import healthRoutes from "./routes/health";
+import authRoutes from "./routes/auth";
+import productsRoutes from "./routes/products";
+import cartRoutes from "./routes/cart";
+import ordersRoutes from "./routes/orders";
+import adminRoutes from "./routes/admin";
+import storageRoutes from "./routes/storage";
+import debugRoutes from "./routes/debug";
+import labRoutes from "./routes/lab";
+import { legacyConfig } from "./services/legacyConfig";
 
 // Configure CORS based on LAB_MODE
 const corsConfig = config.labMode === "vulnerable"
@@ -54,7 +54,7 @@ if (config.labMode === "hardened") {
         blockAllMixedContent: [],
       },
     },
-    frameGuard: { action: "ALLOWALL" },
+    frameguard: { action: "sameorigin" },
     xssFilter: true,
     noSniff: true,
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
