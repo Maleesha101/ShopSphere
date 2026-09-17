@@ -2,8 +2,8 @@
 // Handles admin-only endpoints for users, orders, and reports
 
 import { Router } from "express";
-import { prisma } from "../config/database.ts";
-import { authorizeRoles } from "../middleware/auth.ts";
+import { prisma } from "../config/database";
+import { authorizeRoles } from "../middleware/auth";
 
 const router = Router();
 

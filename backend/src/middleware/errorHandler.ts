@@ -2,7 +2,7 @@
 // Provides mode-specific error responses based on LAB_MODE
 
 import { Request, Response, NextFunction } from "express";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 /**
  * LAB VULNERABILITY: SM-05

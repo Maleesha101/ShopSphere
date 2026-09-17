@@ -2,7 +2,7 @@
 // Handles order creation, retrieval, and management
 
 import { Router } from "express";
-import { prisma } from "../config/database.ts";
+import { prisma } from "../config/database";
 
 const router = Router();
 

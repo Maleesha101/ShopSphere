@@ -3,7 +3,7 @@
 
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 // Extend Express Request interface to include user data
 declare global {
@@ -14,6 +14,10 @@ declare global {
       role: string;
       firstName: string;
       lastName: string;
+    }
+
+    interface Request {
+      user?: User;
     }
   }
 }
@@ -38,8 +42,15 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  // Skip authentication for health endpoint
-  if (req.path === "/api/health" || req.path === "/api/lab/error") {
+  // Public storefront and session bootstrap endpoints do not require a token.
+  const requestPath = req.originalUrl.split("?", 1)[0];
+  if (
+    requestPath === "/api/health" ||
+    requestPath === "/api/lab/error" ||
+    requestPath === "/api/auth/login" ||
+    requestPath === "/api/products" ||
+    requestPath.startsWith("/api/products/")
+  ) {
     next();
     return;
   }
@@ -147,3 +158,5 @@ export const optionalAuth = async (
     next();
   }
 };
+
+export default authMiddleware;

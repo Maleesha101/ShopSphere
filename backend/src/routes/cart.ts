@@ -1,8 +1,10 @@
 // Cart Route for ShopSphere
 // Handles shopping cart operations
 
-import { Request, Response } from "express";
-import { prisma } from "../config/database.ts";
+import { Request, Response, Router } from "express";
+import { prisma } from "../config/database";
+
+const router = Router();
 
 /**
  * GET /api/cart
@@ -104,3 +106,8 @@ export async function addToCart(req: Request, res: Response): Promise<void> {
     res.status(500).json({ error: "Failed to add to cart" });
   }
 }
+
+router.get("/", getCart);
+router.post("/", addToCart);
+
+export default router;

@@ -2,7 +2,7 @@
 // Handles product listing, details, and search
 
 import { Router } from "express";
-import { prisma } from "../config/database.ts";
+import { prisma } from "../config/database";
 
 const router = Router();
 

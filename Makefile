@@ -38,7 +38,7 @@ up-vulnerable: ## Start lab in vulnerable mode
 up-hardened: ## Start lab in hardened mode
 	@echo "$(YELLOW)Starting ShopSphere in HARDENED mode...$(NC)"
 	LAB_MODE=hardened docker compose up --build -d
-	@echo "$(GREEN)Lab running at http://localhost:8080 (hardened)$(NC)"
+	@echo "$(GREEN)Lab running at http://localhost:$${NGINX_PORT:-8080} (redirects to https://localhost:$${NGINX_HTTPS_PORT:-8443})$(NC)"
 
 down: ## Stop all containers
 	docker compose down

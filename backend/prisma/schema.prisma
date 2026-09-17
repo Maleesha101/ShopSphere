@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env      = "DATABASE_URL"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -61,7 +61,6 @@ model Order {
 
   user       User     @relation(fields: [userId], references: [id])
   orderItems OrderItem[]
-  auditLogs  AuditLog[]
 
   @@index([userId])
   @@index([createdAt])

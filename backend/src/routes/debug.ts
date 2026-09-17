@@ -3,7 +3,7 @@
 // Provides server configuration info (intentionally weak in vulnerable mode)
 
 import { Router } from "express";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 const router = Router();
 

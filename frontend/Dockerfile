@@ -10,12 +10,18 @@ WORKDIR /app
 
 # Install dependencies
 COPY package*.json ./
-RUN npm install --no-audit --no-fund
+RUN npm install --no-audit --no-fund \
+    --fetch-retries=5 \
+    --fetch-retry-mintimeout=20000 \
+    --fetch-retry-maxtimeout=120000 \
+    --fetch-timeout=300000 \
+    --maxsockets=1
 
 # Copy source code
 COPY src ./src/
 COPY vite.config.ts ./
 COPY tsconfig.json ./
+COPY tsconfig.node.json ./
 COPY index.html ./
 
 # Build application

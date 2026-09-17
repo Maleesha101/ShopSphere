@@ -2,7 +2,7 @@
 // Provides structured logging for audit trail and debugging
 
 import winston from "winston";
-import { config } from "../config/index.ts";
+import { config } from "../config/index";
 
 // Create logger instance
 const logger = winston.createLogger({
