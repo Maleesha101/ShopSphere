@@ -42,8 +42,14 @@ export const authMiddleware = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  // Skip authentication for health endpoint
-  if (req.path === "/api/health" || req.path === "/api/lab/error") {
+  // Public storefront and session bootstrap endpoints do not require a token.
+  if (
+    req.path === "/api/health" ||
+    req.path === "/api/lab/error" ||
+    req.path === "/api/auth/login" ||
+    req.path === "/api/products" ||
+    req.path.startsWith("/api/products/")
+  ) {
     next();
     return;
   }

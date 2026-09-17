@@ -20,6 +20,7 @@ import storageRoutes from "./routes/storage";
 import debugRoutes from "./routes/debug";
 import labRoutes from "./routes/lab";
 import { legacyConfig } from "./services/legacyConfig";
+import bcrypt from "bcryptjs";
 
 // Configure CORS based on LAB_MODE
 const corsConfig = config.labMode === "vulnerable"
@@ -131,11 +132,54 @@ async function startServer(): Promise<void> {
 async function initDatabase(): Promise<void> {
   try {
     await prisma.$connect();
+    await seedDemoData();
     console.log("✅ Database connected successfully");
   } catch (error) {
     console.error("❌ Database connection failed:", error);
     process.exit(1);
   }
+}
+
+async function seedDemoData(): Promise<void> {
+  const productCount = await prisma.product.count();
+  if (productCount > 0) return;
+
+  const customerPassword = await bcrypt.hash("LAB-Customer-Password-123", 12);
+  const adminPassword = await bcrypt.hash("LAB-Admin-Password-123", 12);
+  const admin = await prisma.user.upsert({
+    where: { email: "admin@example.local" },
+    update: {},
+    create: {
+      email: "admin@example.local",
+      passwordHash: adminPassword,
+      role: "admin",
+      firstName: "Test",
+      lastName: "Admin",
+    },
+  });
+  await prisma.user.upsert({
+    where: { email: "customer@example.local" },
+    update: {},
+    create: {
+      email: "customer@example.local",
+      passwordHash: customerPassword,
+      role: "customer",
+      firstName: "Test",
+      lastName: "Customer",
+    },
+  });
+  await prisma.product.createMany({
+    data: [
+      { name: "Wireless Bluetooth Headphones", description: "Premium noise-cancelling headphones with 30-hour battery life", price: 89.99, stock: 150, category: "electronics" },
+      { name: "Organic Coffee Beans", description: "Single-origin Ethiopian beans, medium roast, 1kg bag", price: 24.99, stock: 500, category: "food" },
+      { name: "Mechanical Keyboard", description: "RGB mechanical keyboard with tactile switches and aluminum frame", price: 149.99, stock: 75, category: "electronics" },
+      { name: "Stainless Steel Water Bottle", description: "Double-walled insulated bottle, 750ml", price: 29.99, stock: 200, category: "accessories" },
+      { name: "Yoga Mat Premium", description: "Eco-friendly non-slip mat with alignment guides", price: 39.99, stock: 80, category: "fitness" },
+      { name: "Desk Lamp LED", description: "Adjustable lamp with dimming and color temperature control", price: 45.99, stock: 120, category: "home" },
+    ],
+  });
+  await prisma.auditLog.create({ data: { userId: admin.id, action: "BOOTSTRAP_DATABASE" } });
+  console.log("🌱 Demo users and products seeded");
 }
 
 // Graceful shutdown

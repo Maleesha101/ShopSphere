@@ -6,6 +6,8 @@ import { CartItem } from '../types';
 const CartPage: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [checkingOut, setCheckingOut] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,20 +18,26 @@ const CartPage: React.FC = () => {
     try {
       const res = await api.get('/cart');
       setCart(res.data.data);
-    } catch (err) {
-      console.error('Failed to fetch cart');
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        navigate('/login', { state: { from: '/cart' } });
+      } else {
+        setError(err.response?.data?.error || 'We could not load your cart.');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleCheckout = async () => {
+    setCheckingOut(true);
     try {
       await api.post('/orders');
-      alert('Order created successfully!');
       navigate('/orders');
     } catch (err: any) {
-      alert(err.response?.data?.error || 'Checkout failed');
+      setError(err.response?.data?.error || 'Checkout failed');
+    } finally {
+      setCheckingOut(false);
     }
   };
 
@@ -39,7 +47,14 @@ const CartPage: React.FC = () => {
 
   return (
     <div className="page">
-      <h2>Your Shopping Cart</h2>
+      <div className="page-heading">
+        <div>
+          <span className="eyebrow">YOUR SELECTION</span>
+          <h2>Your shopping bag</h2>
+          <p className="page-subtitle">Review your pieces before they become part of your everyday.</p>
+        </div>
+      </div>
+      {error && <p className="error-text">{error}</p>}
       {cart.length === 0 ? (
         <p>Your cart is empty. <button onClick={() => navigate("/products")}>Browse products</button></p>
       ) : (
@@ -64,7 +79,7 @@ const CartPage: React.FC = () => {
               <span>Total:</span>
               <strong>${total.toFixed(2)}</strong>
             </div>
-            <button className="checkout-btn" onClick={handleCheckout}>Proceed to Checkout</button>
+            <button className="checkout-btn" onClick={handleCheckout} disabled={checkingOut}>{checkingOut ? 'Preparing order...' : 'Proceed to checkout'}</button>
           </div>
         </div>
       )}
