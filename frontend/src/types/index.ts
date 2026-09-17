@@ -28,6 +28,11 @@ export interface Order {
   status: string;
   createdAt: string;
   items?: OrderItem[];
+  user?: {
+    email: string;
+    firstName?: string;
+    lastName?: string;
+  };
 }
 
 export interface OrderItem {
