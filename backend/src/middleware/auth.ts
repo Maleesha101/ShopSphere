@@ -43,12 +43,13 @@ export const authMiddleware = async (
   next: NextFunction
 ): Promise<void> => {
   // Public storefront and session bootstrap endpoints do not require a token.
+  const requestPath = req.originalUrl.split("?", 1)[0];
   if (
-    req.path === "/api/health" ||
-    req.path === "/api/lab/error" ||
-    req.path === "/api/auth/login" ||
-    req.path === "/api/products" ||
-    req.path.startsWith("/api/products/")
+    requestPath === "/api/health" ||
+    requestPath === "/api/lab/error" ||
+    requestPath === "/api/auth/login" ||
+    requestPath === "/api/products" ||
+    requestPath.startsWith("/api/products/")
   ) {
     next();
     return;

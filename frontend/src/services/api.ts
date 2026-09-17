@@ -1,10 +1,13 @@
 import axios from 'axios';
 
 const configuredApiUrl = import.meta.env.VITE_API_URL?.replace(/\/$/, '');
-const apiBaseUrl = configuredApiUrl
+const configuredBaseUrl = configuredApiUrl
   ? (configuredApiUrl.endsWith('/api') ? configuredApiUrl : `${configuredApiUrl}/api`)
-  : window.location.port === '5173'
-    ? 'http://localhost:3000/api'
+  : undefined;
+const apiBaseUrl = window.location.port === '5173'
+  ? `${window.location.protocol}//${window.location.hostname}:3000/api`
+  : configuredBaseUrl?.startsWith('https://') || window.location.protocol !== 'https:'
+    ? configuredBaseUrl || '/api'
     : '/api';
 
 const api = axios.create({
