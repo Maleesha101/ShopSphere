@@ -101,9 +101,11 @@ services:
     restart: unless-stopped
     ports:
       - "${NGINX_PORT:-8080}:8080"
+      - "${NGINX_HTTPS_PORT:-8443}:8443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/${LAB_MODE:-vulnerable}.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
       api:
         condition: service_healthy
